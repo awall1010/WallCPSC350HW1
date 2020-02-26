@@ -3,14 +3,14 @@
 #include <cmath>
 using namespace std;
 
-double calcMean(double charCount, int attemptCount){
+double calcMean(double charCount, int attemptCount){//declare function to calculate the mean
   double mean = charCount/attemptCount;
   return mean;
 }
 
 int main(int argc, char const *argv[]) {
 
-  if(argc<2){
+  if(argc<2){ //make sure valid command line parameters
     cout<<"invalid command line parameters."<<endl;
     return 1;
 
@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
 
   char letter; //create char of letter to iterate through later
   char secondLetter;
-  int Acounter = 0; //initialize all counters
+  int Acounter = 0; //initialize all counters and variables
   int Ccounter = 0;
   int Tcounter = 0;
   int Gcounter = 0;
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[]) {
   int GTcounter = 0;
   int GGcounter = 0;
   int totalCount = 0;
-  int lineCount=0;
+
   string blankString = "";
   int failLineCount = 0;
   int attemptCount = 0;
@@ -52,31 +52,31 @@ int main(int argc, char const *argv[]) {
   double variance = 0;
   double vCount = 0;
   double meanLength =0;
-  // string line = "";
   double standardDeviation=0;
-  // string charCounter = "";
+  // int argFile = 1;
+  bool enter = true;
+  fName = argv[1];
 
-  // for(int i = 1; i<argc;++i){
-    fName = argv[1];
-    inFS.open(fName);
-    // outFS.open("aidanWall.out",std::ios_base::app );
-    outFS.open("aidanWall.out",std::ios_base::out );
+  while(enter){ //enter while loop
+
+    cout<<"File name: "<<fName<<endl;
+    inFS.open(fName); //open file
+    outFS.open("aidanWall.out",std::ios_base::app );//append to file
+
 
     if(!inFS.is_open()){ //is_open() function returns boolean if it is open
       cout<< "could not open file "<< fName<<endl;
       return 1; //break program
     }
 
-    cout<< "reading letters "<<endl;
+
 
     while(!inFS.eof()){ //while != end of file
       inFS >> fileNum;
 
-      lineCount++;
-      blankString+=fileNum+",";
-      // for(int i = 0;i<blankString.size();++i){
-      //   charCounter+= blankString[i]+",";
-      // }
+
+      blankString+=fileNum+",";//create blank string
+
 
 
       if(!inFS.fail()){ //if it does not fail
@@ -85,12 +85,11 @@ int main(int argc, char const *argv[]) {
         failLineCount++;
 
         for(int i= 0; i<fileNum.size();++i){
-          fileNum[i] = toupper(fileNum[i]);
+          fileNum[i] = toupper(fileNum[i]);//make all capital
 
 
-          letter = fileNum[i];
-          cout<<letter<<endl;
-          // blankString+=letter+",";
+          letter = fileNum[i];//iterate through each char
+
           if (letter == 'A') {
             Acounter++;
             totalCount++;
@@ -107,16 +106,14 @@ int main(int argc, char const *argv[]) {
             Gcounter++;
             totalCount++;
           }
-          // else if(letter =="\n"){
-          //   lineCount++;
-          // }
+
           else{
             otherCounter++;
-            // totalCount++;//dont include because if non ACTG not in mean or stdvs
+
           }
         }
 
-        for(int i = 0; i<fileNum.size(); i+=2 ){
+        for(int i = 0; i<fileNum.size(); i+=2 ){ //iterate through each bigram
           fileNum[i] = toupper(fileNum[i]);
           letter = fileNum[i];
           secondLetter = fileNum[i+1];
@@ -124,67 +121,67 @@ int main(int argc, char const *argv[]) {
 
           if(letter == 'A' && secondLetter =='A'){
             AAcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'A'&& secondLetter == 'C'){
             ACcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'A'&& secondLetter == 'T'){
             ATcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'A'&& secondLetter == 'G'){
               AGcounter++;
-              // totalCount++;
+
             }
           else if(letter == 'C'&& secondLetter == 'A'){
             CAcounter++;
-            totalCount++;
+
           }
           else if(letter == 'C'&& secondLetter == 'C'){
             CCcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'C'&& secondLetter == 'T'){
             CTcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'C'&& secondLetter == 'G'){
             CGcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'T'&& secondLetter == 'A'){
             TAcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'T'&& secondLetter == 'C'){
             TCcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'T'&& secondLetter == 'T'){
             TTcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'T'&& secondLetter == 'G'){
             TGcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'G'&& secondLetter == 'A'){
             GAcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'G'&& secondLetter == 'C'){
             GCcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'G'&& secondLetter == 'T'){
             GTcounter++;
-            // totalCount++;
+
           }
           else if(letter == 'G'&& secondLetter == 'G'){
             GGcounter++;
-            // totalCount++;
+
           }
           else{
             otherCounter++;
@@ -196,11 +193,11 @@ int main(int argc, char const *argv[]) {
 
 
     } //close while loop, AFTER HERE
-    meanLength = double(attemptCount)/failLineCount;
-    cout<<"BLANK STRING: " << blankString<<endl;
+    meanLength = double(attemptCount)/failLineCount; //mean string length
 
 
-    for(int i = 0;i<blankString.size()-1;++i){
+
+    for(int i = 0;i<blankString.size()-1;++i){ //loop to calculate variance
       if(blankString[i]==','){
         vSum = vSum+ pow((vCount-double(meanLength)),2);
         vCount = 0;
@@ -212,10 +209,30 @@ int main(int argc, char const *argv[]) {
     }
 
     variance = double(vSum)/(failLineCount);
-    cout<<"Variance: "<< variance<<endl;
+
 
     standardDeviation = sqrt(variance);
-    cout<<"standard deviation "<<standardDeviation<<endl;
+
+
+
+    double a = 0;
+    double b = 0;
+    double c = 0;
+    double d = 0;
+    a = ((double) rand() / (RAND_MAX));
+    b = ((double) rand()/(RAND_MAX));
+
+    c=sqrt((-2*log(a)))*cos(2*b*M_PI);
+
+    d=(c*standardDeviation)+meanLength;
+
+
+    // cout<<"rand a "<<a<<endl;
+    // cout<<"rand b "<<b<<endl;
+    // cout<<"c: "<<c<<endl;
+    // cout<<"d: "<<d<<endl;
+
+    string writeString = "";
 
 
     double aMean = calcMean(double(Acounter),attemptCount);
@@ -244,12 +261,11 @@ int main(int argc, char const *argv[]) {
     double GGMean = 2*calcMean(double(GGcounter),attemptCount);
 
 
-    outFS<<"The Mean of the length of the DNA strings is: " << (double(attemptCount)/failLineCount)<<endl;
+
     outFS<<"The Mean of the length of the DNA strings is: " << meanLength<<endl;
     outFS<<"The Variance of the length of the DNA strings is: "<<variance<<endl;
     outFS<<"The Standard Deviation of the length of the DNA strings is: "<<standardDeviation<<endl;
-    cout<<"fail line count "<<failLineCount<<endl;
-    // variance = meanLength
+
 
 
     outFS<<endl;
@@ -284,8 +300,45 @@ int main(int argc, char const *argv[]) {
     outFS<< "GG: "<<GGMean<<endl;
 
     outFS<<endl;
-  // }
-  inFS.close();
+
+
+        for(int i = 0; i<1000;++i){ //loop to create random strings
+          for(int j = 0;j<int(d);++j ){
+              double randNum = ((double) rand() / (RAND_MAX));
+              if(randNum>0&& randNum<=aMean){
+                writeString+="A";
+              }
+              else if(randNum>aMean && randNum<=(cMean+aMean)){
+                writeString+="C";
+              }
+              else if(randNum>(cMean+aMean) && randNum<=(cMean+aMean+tMean)){
+                writeString+="T";
+              }
+              else{
+                writeString+="G";
+              }
+              // outFS>>;
+
+            }
+            outFS<<writeString<<endl;
+            writeString="";
+        }
+        int anotherFile = 0;
+        string addFile;
+        cout<<"Enter 1 if you want to analyze another file: "<<endl;
+        cin>> anotherFile;
+        if(anotherFile==1){ //prompt for another file
+          cout<<"enter the name of the file: "<<endl;
+          cin>>addFile;
+          fName=addFile;
+          // break;
+        }
+        else{
+          enter = false;
+        }
+}
+  
+  inFS.close();//close streams
   outFS.close();
   return 0;
 }
